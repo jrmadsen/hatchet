@@ -60,13 +60,11 @@ setup(
         Extension(
             "hatchet.cython_modules.libs.reader_modules",
             ["hatchet/cython_modules/reader_modules.c"],
-            arch=('x86_64'),
             extra_compile_args=extra_compile_args,
         ),
         Extension(
             "hatchet.cython_modules.libs.graphframe_modules",
             ["hatchet/cython_modules/graphframe_modules.c"],
-            arch=('x86_64'),
             extra_compile_args=extra_compile_args,
         ),
     ],
