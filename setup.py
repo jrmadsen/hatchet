@@ -24,7 +24,7 @@ with open("./hatchet/version.py") as fp:
 
 # compiler configured from cmake
 c_compiler = "@CMAKE_C_COMPILER@"
-if c_compiler != "".join(["@", "CMAKE_C_COMPILER", "@"]:
+if c_compiler != "".join(["@", "CMAKE_C_COMPILER", "@"]):
     environ["CC"] = c_compiler
 
 # Common flags for both release and debug builds.
