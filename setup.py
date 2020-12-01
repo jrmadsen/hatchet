@@ -7,6 +7,8 @@ from setuptools import setup
 from setuptools import Extension
 from codecs import open
 from os import path
+from os import environ
+import sysconfig
 
 here = path.abspath(path.dirname(__file__))
 
@@ -20,6 +22,17 @@ version = {}
 with open("./hatchet/version.py") as fp:
     exec(fp.read(), version)
 
+# compiler configured from cmake
+c_compiler = "@CMAKE_C_COMPILER@"
+if c_compiler != "".join(["@", "CMAKE_C_COMPILER", "@"]:
+    environ["CC"] = c_compiler
+
+# Common flags for both release and debug builds.
+extra_compile_args = sysconfig.get_config_var("CFLAGS").replace("-arch arm64", "").split()
+extra_compile_args += environ.get("CFLAGS", "").split()
+config_compiler_args = "@CFLAGS@"
+if config_compiler_args and config_compiler_args != "".join(["@", "CFLAGS", "@"]):
+    extra_compile_args += config_compiler_args.split()
 
 setup(
     name="hatchet",
@@ -47,10 +60,14 @@ setup(
         Extension(
             "hatchet.cython_modules.libs.reader_modules",
             ["hatchet/cython_modules/reader_modules.c"],
+            arch=('x86_64'),
+            extra_compile_args=extra_compile_args,
         ),
         Extension(
             "hatchet.cython_modules.libs.graphframe_modules",
             ["hatchet/cython_modules/graphframe_modules.c"],
+            arch=('x86_64'),
+            extra_compile_args=extra_compile_args,
         ),
     ],
 )
