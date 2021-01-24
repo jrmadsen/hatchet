@@ -25,17 +25,18 @@ if(TARGET libpytimemory)
         set(CFLAGS "-Wno-deprecated-declarations")
     endif()
 
+    set(SETUP_PY_FILE .setup.${CMAKE_SYSTEM_NAME}.${CMAKE_C_COMPILER_ID}.${CMAKE_C_COMPILER_VERSION}.${CMAKE_BUILD_TYPE}.py)
     # create custom setup.py with (potentially) extra flags
-    configure_file(${PROJECT_SOURCE_DIR}/setup.py ${PROJECT_SOURCE_DIR}/.setup.py @ONLY)
+    configure_file(${PROJECT_SOURCE_DIR}/setup.py ${PROJECT_SOURCE_DIR}/${SETUP_PY_FILE} @ONLY)
 
     # target for adding a dependency to libpytimemory target
     add_custom_target(hatchet
         COMMAND
-            ${PYTHON_EXECUTABLE} .setup.py --quiet build_ext --inplace
+            ${PYTHON_EXECUTABLE} ${SETUP_PY_FILE} --quiet build_ext --inplace
         WORKING_DIRECTORY
             ${PROJECT_SOURCE_DIR}
         COMMENT
-            "[hatchet] ${PYTHON_EXECUTABLE} .setup.py --quiet build_ext --inplace")
+            "[hatchet] ${PYTHON_EXECUTABLE} ${SETUP_PY_FILE} --quiet build_ext --inplace")
 
     # create a post-build command sequence for our dummy hatchet target
     add_custom_command(TARGET hatchet
