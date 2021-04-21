@@ -28,9 +28,12 @@ if c_compiler != "".join(["@", "CMAKE_C_COMPILER", "@"]):
     environ["CC"] = c_compiler
 
 # Common flags for both release and debug builds.
-extra_compile_args = (
-    sysconfig.get_config_var("CFLAGS").replace("-arch arm64", "").split()
-)
+if sysconfig.get_config_var("CFLAGS") is not None:
+    extra_compile_args = (
+        sysconfig.get_config_var("CFLAGS").replace("-arch arm64", "").split()
+    )
+else:
+    extra_compile_args = []
 extra_compile_args += environ.get("CFLAGS", "").split()
 config_compiler_args = "@CFLAGS@"
 if config_compiler_args and config_compiler_args != "".join(["@", "CFLAGS", "@"]):
