@@ -30,7 +30,11 @@ if c_compiler != "".join(["@", "CMAKE_C_COMPILER", "@"]):
 # Common flags for both release and debug builds.
 if sysconfig.get_config_var("CFLAGS") is not None:
     extra_compile_args = (
-        sysconfig.get_config_var("CFLAGS").replace("-arch arm64", "").split()
+        sysconfig.get_config_var("CFLAGS")
+        .replace("-arch arm64", "")
+        .replace("-flto", "")
+        .replace("-ffat-lto-objects", "")
+        .split()
     )
 else:
     extra_compile_args = []
